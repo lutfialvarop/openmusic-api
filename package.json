@@ -1,0 +1,32 @@
+{
+    "name": "openmusic-api",
+    "version": "1.0.0",
+    "description": "",
+    "license": "ISC",
+    "author": "Lutfi Alvaro Pratama",
+    "type": "commonjs",
+    "main": "src/server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node ./src/server.js",
+        "start-dev": "nodemon ./src/server.js",
+        "lint": "eslint ./",
+        "migrate": "node-pg-migrate",
+        "lint:fix": "eslint . --fix"
+    },
+    "dependencies": {
+        "@hapi/hapi": "^21.4.2",
+        "dotenv": "^17.2.1",
+        "hapi": "^18.1.0",
+        "joi": "^18.0.0",
+        "nanoid": "^5.1.5",
+        "node-pg-migrate": "^8.0.3",
+        "pg": "^8.16.3"
+    },
+    "devDependencies": {
+        "@eslint/js": "^9.33.0",
+        "eslint": "^9.33.0",
+        "eslint-config": "^0.3.0",
+        "globals": "^16.3.0"
+    }
+}
