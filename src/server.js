@@ -8,6 +8,7 @@ const AlbumsValidator = require("./validator/albums");
 const songs = require("./api/songs");
 const SongsService = require("./services/postgres/SongsService");
 const SongsValidator = require("./validator/songs");
+const ClientError = require("./exceptions/ClientError");
 
 const init = async () => {
     const albumsService = new AlbumsService();
@@ -39,6 +40,34 @@ const init = async () => {
             },
         },
     ]);
+
+    server.ext("onPreResponse", (request, h) => {
+        const { response } = request;
+
+        if (response instanceof Error) {
+            if (response instanceof ClientError) {
+                return h
+                    .response({
+                        status: "fail",
+                        message: response.message,
+                    })
+                    .code(response.statusCode);
+            }
+
+            if (!response.isServer) {
+                return h.continue;
+            }
+
+            return h
+                .response({
+                    status: "error",
+                    message: "Internal Server Error",
+                })
+                .code(500);
+        }
+
+        return h.continue;
+    });
 
     await server.start();
     console.log(`Server running on ${server.info.uri}`);
