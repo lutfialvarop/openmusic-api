@@ -1,5 +1,5 @@
-const { Pool } = require("pg");
-const InvariantError = require("../../exceptions/InvariantError");
+const { Pool } = require('pg');
+const InvariantError = require('../../exceptions/InvariantError');
 
 class AuthenticationsService {
     constructor() {
@@ -11,7 +11,7 @@ class AuthenticationsService {
         const updatedAt = createdAt;
 
         const query = {
-            text: "INSERT INTO authentications VALUES($1, $2, $3)",
+            text: 'INSERT INTO authentications VALUES($1, $2, $3)',
             values: [token, createdAt, updatedAt],
         };
 
@@ -20,20 +20,20 @@ class AuthenticationsService {
 
     async verifyToken(token) {
         const query = {
-            text: "SELECT token FROM authentications WHERE token = $1",
+            text: 'SELECT token FROM authentications WHERE token = $1',
             values: [token],
         };
 
         const result = await this._pool.query(query);
 
         if (!result.rows.length) {
-            throw new InvariantError("Token not valid");
+            throw new InvariantError('Token not valid');
         }
     }
 
     async deleteToken(token) {
         const query = {
-            text: "DELETE FROM authentications WHERE token = $1",
+            text: 'DELETE FROM authentications WHERE token = $1',
             values: [token],
         };
 

@@ -14,8 +14,8 @@ class UsersHandler {
 
         return h
             .response({
-                status: "success",
-                message: "User successfully added",
+                status: 'success',
+                message: 'User successfully added',
                 data: {
                     userId,
                 },

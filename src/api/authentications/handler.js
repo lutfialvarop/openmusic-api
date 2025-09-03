@@ -23,8 +23,8 @@ class AuthenticationsHandler {
 
         return h
             .response({
-                status: "success",
-                message: "Authentication successfully added",
+                status: 'success',
+                message: 'Authentication successfully added',
                 data: {
                     accessToken,
                     refreshToken,
@@ -45,8 +45,8 @@ class AuthenticationsHandler {
 
         return h
             .response({
-                status: "success",
-                message: "Authentication successfully added",
+                status: 'success',
+                message: 'Authentication successfully added',
                 data: {
                     accessToken,
                 },
@@ -64,8 +64,8 @@ class AuthenticationsHandler {
 
         return h
             .response({
-                status: "success",
-                message: "Token successfully deleted",
+                status: 'success',
+                message: 'Token successfully deleted',
             })
             .code(200);
     }

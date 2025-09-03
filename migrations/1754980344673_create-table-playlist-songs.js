@@ -4,32 +4,32 @@
  * @returns {Promise<void> | void}
  */
 exports.up = (pgm) => {
-    pgm.createTable("playlist_songs", {
+    pgm.createTable('playlist_songs', {
         id: {
-            type: "VARCHAR(50)",
+            type: 'VARCHAR(50)',
             primaryKey: true,
         },
         playlist_id: {
-            type: "VARCHAR(50)",
+            type: 'VARCHAR(50)',
             notNull: true,
-            references: "playlists",
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
+            references: 'playlists',
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
         },
         song_id: {
-            type: "VARCHAR(50)",
+            type: 'VARCHAR(50)',
             notNull: true,
-            references: "songs",
-            onDelete: "CASCADE",
-            onUpdate: "CASCADE",
+            references: 'songs',
+            onDelete: 'CASCADE',
+            onUpdate: 'CASCADE',
         },
         create_at: {
-            type: "TIMESTAMP",
-            default: pgm.func("current_timestamp"),
+            type: 'TIMESTAMP',
+            default: pgm.func('current_timestamp'),
         },
         updated_at: {
-            type: "TIMESTAMP",
-            default: pgm.func("current_timestamp"),
+            type: 'TIMESTAMP',
+            default: pgm.func('current_timestamp'),
         },
     });
 };
@@ -40,5 +40,5 @@ exports.up = (pgm) => {
  * @returns {Promise<void> | void}
  */
 exports.down = (pgm) => {
-    pgm.dropTable("playlist_songs");
+    pgm.dropTable('playlist_songs');
 };

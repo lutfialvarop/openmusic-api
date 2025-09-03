@@ -4,30 +4,30 @@
  * @returns {Promise<void> | void}
  */
 exports.up = (pgm) => {
-    pgm.createTable("users", {
+    pgm.createTable('users', {
         id: {
-            type: "VARCHAR(50)",
+            type: 'VARCHAR(50)',
             primaryKey: true,
         },
         username: {
-            type: "VARCHAR(255)",
+            type: 'VARCHAR(255)',
             notNull: true,
         },
         password: {
-            type: "TEXT",
+            type: 'TEXT',
             notNull: true,
         },
         fullname: {
-            type: "TEXT",
+            type: 'TEXT',
             notNull: true,
         },
         create_at: {
-            type: "TIMESTAMP",
-            default: pgm.func("current_timestamp"),
+            type: 'TIMESTAMP',
+            default: pgm.func('current_timestamp'),
         },
         updated_at: {
-            type: "TIMESTAMP",
-            default: pgm.func("current_timestamp"),
+            type: 'TIMESTAMP',
+            default: pgm.func('current_timestamp'),
         },
     });
 };
@@ -38,5 +38,5 @@ exports.up = (pgm) => {
  * @returns {Promise<void> | void}
  */
 exports.down = (pgm) => {
-    pgm.dropTable("users");
+    pgm.dropTable('users');
 };

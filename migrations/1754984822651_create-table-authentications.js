@@ -4,18 +4,18 @@
  * @returns {Promise<void> | void}
  */
 exports.up = (pgm) => {
-    pgm.createTable("authentications", {
+    pgm.createTable('authentications', {
         token: {
-            type: "TEXT",
+            type: 'TEXT',
             notNull: true,
         },
         create_at: {
-            type: "TIMESTAMP",
-            default: pgm.func("current_timestamp"),
+            type: 'TIMESTAMP',
+            default: pgm.func('current_timestamp'),
         },
         updated_at: {
-            type: "TIMESTAMP",
-            default: pgm.func("current_timestamp"),
+            type: 'TIMESTAMP',
+            default: pgm.func('current_timestamp'),
         },
     });
 };
@@ -26,5 +26,5 @@ exports.up = (pgm) => {
  * @returns {Promise<void> | void}
  */
 exports.down = (pgm) => {
-    pgm.dropTable("authentications");
+    pgm.dropTable('authentications');
 };

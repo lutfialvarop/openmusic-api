@@ -1,5 +1,5 @@
-const InvariantError = require("../../exceptions/InvariantError");
-const { PostAuthenticationsPayloadSchema, PutAuthenticationsPayloadSchema, DeleteAuthenticationsPayloadSchema } = require("./schema");
+const InvariantError = require('../../exceptions/InvariantError');
+const { PostAuthenticationsPayloadSchema, PutAuthenticationsPayloadSchema, DeleteAuthenticationsPayloadSchema } = require('./schema');
 
 const AuthenticationsValidator = {
     validatePostAuthenticationsPayload: (payload) => {

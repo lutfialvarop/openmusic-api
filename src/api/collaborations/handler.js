@@ -20,8 +20,8 @@ class CollaborationHandler {
 
         return h
             .response({
-                status: "success",
-                message: "Collaboration successfully added",
+                status: 'success',
+                message: 'Collaboration successfully added',
                 data: {
                     collaborationId,
                 },
@@ -40,8 +40,8 @@ class CollaborationHandler {
 
         return h
             .response({
-                status: "success",
-                message: "Collaboration successfully deleted",
+                status: 'success',
+                message: 'Collaboration successfully deleted',
             })
             .code(200);
     }

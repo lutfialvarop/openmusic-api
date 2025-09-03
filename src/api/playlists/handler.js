@@ -1,7 +1,9 @@
 class PlaylistHandler {
-    constructor(service, validator) {
+    constructor(service, validator, exportService, exportValidator) {
         this._service = service;
         this._validator = validator;
+        this._exportService = exportService;
+        this._exportValidator = exportValidator;
 
         this.addPlaylist = this.addPlaylist.bind(this);
         this.getPlaylist = this.getPlaylist.bind(this);
@@ -10,6 +12,7 @@ class PlaylistHandler {
         this.getSongsOnPlaylistById = this.getSongsOnPlaylistById.bind(this);
         this.deleteSongsOnPlaylistById = this.deleteSongsOnPlaylistById.bind(this);
         this.getActivitiy = this.getActivitiy.bind(this);
+        this.exportPlaylist = this.exportPlaylist.bind(this);
     }
 
     async addPlaylist(request, h) {
@@ -21,8 +24,8 @@ class PlaylistHandler {
 
         return h
             .response({
-                status: "success",
-                message: "Playlist successfully added",
+                status: 'success',
+                message: 'Playlist successfully added',
                 data: {
                     playlistId,
                 },
@@ -35,7 +38,7 @@ class PlaylistHandler {
         const playlists = await this._service.getPlaylist(credentialId);
         return h
             .response({
-                status: "success",
+                status: 'success',
                 data: {
                     playlists,
                 },
@@ -52,8 +55,8 @@ class PlaylistHandler {
 
         return h
             .response({
-                status: "success",
-                message: "Playlist successfully deleted",
+                status: 'success',
+                message: 'Playlist successfully deleted',
             })
             .code(200);
     }
@@ -67,12 +70,12 @@ class PlaylistHandler {
 
         await this._service.verifyCollabPlaylist(id, credentialId);
         const result = await this._service.addSongOnPlaylistById(id, songId);
-        await this._service.insertActivitiy({ playlistID: id, songId, userId: credentialId, action: "add" });
+        await this._service.insertActivitiy({ playlistID: id, songId, userId: credentialId, action: 'add' });
 
         return h
             .response({
-                status: "success",
-                message: "Songs successfully added to playlist",
+                status: 'success',
+                message: 'Songs successfully added to playlist',
                 data: {
                     result,
                 },
@@ -90,7 +93,7 @@ class PlaylistHandler {
 
         return h
             .response({
-                status: "success",
+                status: 'success',
                 data: {
                     playlist: {
                         ...playlist,
@@ -110,12 +113,12 @@ class PlaylistHandler {
 
         await this._service.verifyCollabPlaylist(id, credentialId);
         await this._service.deleteSongsOnPlaylistById(songId, id);
-        await this._service.insertActivitiy({ playlistID: id, songId, userId: credentialId, action: "delete" });
+        await this._service.insertActivitiy({ playlistID: id, songId, userId: credentialId, action: 'delete' });
 
         return h
             .response({
-                status: "success",
-                message: "Song on playlist successfully deleted",
+                status: 'success',
+                message: 'Song on playlist successfully deleted',
             })
             .code(200);
     }
@@ -129,13 +132,37 @@ class PlaylistHandler {
 
         return h
             .response({
-                status: "success",
+                status: 'success',
                 data: {
                     playlistId: id,
                     activities,
                 },
             })
             .code(200);
+    }
+
+    async exportPlaylist(request, h) {
+        const { id } = request.params;
+        const { id: credentialId } = request.auth.credentials;
+        const { targetEmail } = request.payload;
+
+        this._exportValidator.validateExportPlaylistPayload(request.payload);
+        await this._service.verifyPlaylistOwner(id, credentialId);
+        const message = {
+            to: targetEmail,
+            subject: 'Export Playlist',
+            text: 'You have a new playlist export request',
+            html: '<p>You have a new playlist export request</p>',
+        };
+
+        await this._exportService.sendMessage('export:playlists', JSON.stringify({ playlistId: id, targetEmail, message }));
+
+        return h
+            .response({
+                status: 'success',
+                message: 'Your request is being processed',
+            })
+            .code(201);
     }
 }
 

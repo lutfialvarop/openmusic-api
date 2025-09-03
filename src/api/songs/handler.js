@@ -18,8 +18,8 @@ class SongHandler {
 
         return h
             .response({
-                status: "success",
-                message: "Song successfully added",
+                status: 'success',
+                message: 'Song successfully added',
                 data: {
                     songId,
                 },
@@ -33,7 +33,7 @@ class SongHandler {
 
         return h
             .response({
-                status: "success",
+                status: 'success',
                 data: {
                     song,
                 },
@@ -44,7 +44,7 @@ class SongHandler {
     async getAllSongs(request, h) {
         const { title, performer } = request.query;
 
-        var songs = await this._service.getAllSongs();
+        let songs = await this._service.getAllSongs();
 
         if (title || performer) {
             songs = await this._service.getSongsByQuery({ title, performer });
@@ -52,7 +52,7 @@ class SongHandler {
 
         return h
             .response({
-                status: "success",
+                status: 'success',
                 data: {
                     songs,
                 },
@@ -69,8 +69,8 @@ class SongHandler {
 
         return h
             .response({
-                status: "success",
-                message: "Song successfully updated",
+                status: 'success',
+                message: 'Song successfully updated',
                 data: {
                     songId,
                 },
@@ -84,8 +84,8 @@ class SongHandler {
 
         return h
             .response({
-                status: "success",
-                message: "Song successfully deleted",
+                status: 'success',
+                message: 'Song successfully deleted',
             })
             .code(200);
     }

@@ -16,19 +16,24 @@
     },
     "dependencies": {
         "@hapi/hapi": "^21.4.2",
+        "@hapi/inert": "^7.1.0",
         "@hapi/jwt": "^3.2.0",
+        "amqplib": "^0.10.9",
         "bcrypt": "^6.0.0",
         "dotenv": "^17.2.1",
         "hapi": "^18.1.0",
         "joi": "^18.0.0",
         "nanoid": "^5.1.5",
         "node-pg-migrate": "^8.0.3",
-        "pg": "^8.16.3"
+        "nodemailer": "^7.0.6",
+        "pg": "^8.16.3",
+        "redis": "^5.8.2"
     },
     "devDependencies": {
         "@eslint/js": "^9.33.0",
         "eslint": "^9.33.0",
         "eslint-config": "^0.3.0",
+        "eslint-config-dicodingacademy": "^0.9.5",
         "globals": "^16.3.0"
     }
 }
