@@ -12,7 +12,7 @@ class PlaylistsService {
     }
 
     async addPlaylist({ name, owner }) {
-        const id = `playlist-${  nanoid(16)}`;
+        const id = `playlist-${nanoid(16)}`;
         const createdAt = new Date().toISOString();
         const updatedAt = createdAt;
 
@@ -109,7 +109,7 @@ class PlaylistsService {
     }
 
     async addSongOnPlaylistById(playlistId, songId) {
-        const id = `playlistsong-${  nanoid(16)}`;
+        const id = `playlistsong-${nanoid(16)}`;
         const createdAt = new Date().toISOString();
         const updatedAt = createdAt;
 
@@ -157,7 +157,7 @@ class PlaylistsService {
     }
 
     async insertActivitiy({ playlistID, songId, userId, action }) {
-        const id = `activity-${  nanoid(16)}`;
+        const id = `activity-${nanoid(16)}`;
         const createdAt = new Date().toISOString();
         const updatedAt = createdAt;
 

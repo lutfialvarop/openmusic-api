@@ -148,11 +148,24 @@ class PlaylistHandler {
 
         this._exportValidator.validateExportPlaylistPayload(request.payload);
         await this._service.verifyPlaylistOwner(id, credentialId);
+        const playlist = await this._service.getPlaylistById(id);
+        const songs = await this._service.getSongsOnPlaylistById(id);
         const message = {
             to: targetEmail,
             subject: 'Export Playlist',
             text: 'You have a new playlist export request',
             html: '<p>You have a new playlist export request</p>',
+            attachments: [
+                {
+                    filename: 'playlist.json',
+                    content: JSON.stringify({
+                        playlist: {
+                            ...playlist,
+                            songs,
+                        },
+                    }),
+                },
+            ],
         };
 
         await this._exportService.sendMessage('export:playlists', JSON.stringify({ playlistId: id, targetEmail, message }));
