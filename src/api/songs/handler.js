@@ -44,20 +44,24 @@ class SongHandler {
     async getAllSongs(request, h) {
         const { title, performer } = request.query;
 
-        let songs = await this._service.getAllSongs();
+        let data = await this._service.getAllSongs();
 
         if (title || performer) {
-            songs = await this._service.getSongsByQuery({ title, performer });
+            data = await this._service.getSongsByQuery({ title, performer });
         }
 
-        return h
-            .response({
-                status: 'success',
-                data: {
-                    songs,
-                },
-            })
-            .code(200);
+        const response = h.response({
+            status: 'success',
+            data: {
+                songs: data.songs,
+            },
+        });
+
+        if (data.source == 'cache') {
+            response.header('X-Data-Source', 'cache');
+        }
+
+        return response.code(200);
     }
 
     async editSongById(request, h) {

@@ -4,12 +4,13 @@ const InvariantError = require('../../exceptions/InvariantError');
 const NotFoundError = require('../../exceptions/NotFoundError');
 
 class SongsService {
-    constructor() {
+    constructor(cacheService) {
         this._pool = new Pool();
+        this._cacheService = cacheService;
     }
 
     async addSong({ title, year, genre, performer, duration, albumId }) {
-        const id = `song-${  nanoid(16)}`;
+        const id = `song-${nanoid(16)}`;
         const createdAt = new Date().toISOString();
         const updatedAt = createdAt;
 
@@ -23,6 +24,8 @@ class SongsService {
         if (!result.rows.length) {
             throw new InvariantError('Song failed to add');
         }
+
+        await this._cacheService.delete('songs');
 
         return result.rows[0].id;
     }
@@ -43,12 +46,26 @@ class SongsService {
     }
 
     async getAllSongs() {
-        const query = {
-            text: 'SELECT id, title, performer FROM songs',
-        };
+        try {
+            const result = await this._cacheService.get('songs');
+            return {
+                songs: JSON.parse(result),
+                source: 'cache',
+            };
+        } catch {
+            const query = {
+                text: 'SELECT id, title, performer FROM songs',
+            };
 
-        const result = await this._pool.query(query);
-        return result.rows;
+            const result = await this._pool.query(query);
+
+            await this._cacheService.set('songs', JSON.stringify(result.rows));
+
+            return {
+                songs: result.rows,
+                source: 'database',
+            };
+        }
     }
 
     async getSongsByQuery({ title, performer }) {
@@ -70,7 +87,7 @@ class SongsService {
         }
 
         if (conditions.length > 0) {
-            query += ` WHERE ${  conditions.join(' AND ')}`;
+            query += ` WHERE ${conditions.join(' AND ')}`;
         }
 
         const result = await this._pool.query({
@@ -78,7 +95,7 @@ class SongsService {
             values,
         });
 
-        return result.rows;
+        return { songs: result.rows };
     }
 
     async editSongById(id, { title, year, genre, performer, duration, albumId }) {
@@ -94,6 +111,8 @@ class SongsService {
             throw new NotFoundError('Failed to update song. Song not found.');
         }
 
+        await this._cacheService.delete('songs');
+
         return result.rows[0].id;
     }
 
@@ -108,6 +127,8 @@ class SongsService {
         if (!result.rows.length) {
             throw new NotFoundError('Failed to delete song. Song not found.');
         }
+
+        await this._cacheService.delete('songs');
 
         return result.rows[0].id;
     }

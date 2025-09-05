@@ -36,14 +36,18 @@ class AlbumHandler {
         const { id } = request.params;
         const album = await this._service.getAlbumById(id);
 
-        return h
-            .response({
-                status: 'success',
-                data: {
-                    album,
-                },
-            })
-            .code(200);
+        const response = h.response({
+            status: 'success',
+            data: {
+                album: album.album,
+            },
+        });
+
+        if (album.source == 'cache') {
+            response.header('X-Data-Source', 'cache');
+        }
+
+        return response.code(200);
     }
 
     async deleteAlbumById(request, h) {
