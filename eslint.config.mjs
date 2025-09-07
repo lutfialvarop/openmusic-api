@@ -11,6 +11,7 @@ export default defineConfig([
     languageOptions: { sourceType: 'commonjs' },
     rules: {
       indent: ['error', 4],
+      'linebreak-style': ['error', 'windows'],
     },
   },
   {
